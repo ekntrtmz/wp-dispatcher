@@ -1,0 +1,18 @@
+/**
+ * All of the CSS for your admin-specific functionality should be
+ * included in this file.
+ */
+
+
+ .wp-list-table.links #filename {
+   width: 10%;
+ }
+
+
+ .wp-list-table.links #expires {
+  width: 30%;
+}
+
+ .wp-list-table.uploads #filename {
+  width: 10%;
+}
