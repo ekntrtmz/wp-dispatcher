@@ -220,7 +220,7 @@ class Uploads_List_Table extends Custom_WP_List_Table {
 
   /** Text displayed when no customer data is available */
   public function no_items() {
-    _e( 'No uploads avaliable. Please add a new upload.', 'wp_dispatcher' );
+    _e( 'No uploads available.', 'wp_dispatcher' );
   }
   
 }

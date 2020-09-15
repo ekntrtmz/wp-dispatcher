@@ -109,32 +109,42 @@ class Wp_Dispatcher_Add_New_Upload {
         //$ext = pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION);
         //$uuid = uniqid();
 
-        $destination = WP_CONTENT_DIR . '/uploads/wp-dispatcher/' . $filename;
-
-        $uploaded = move_uploaded_file( $source, $destination );
-
-        // Error checking using WP functions
-        if(is_wp_error($uploaded)){
-            echo "Error uploading file: " . $uploaded->get_error_message();
-        }else{
-
-					// Insert to data base
-					global $wpdb;
-					$table_name = $wpdb->prefix . 'dispatcher_uploads';
-
-					$wpdb->insert( 
-						$table_name, 
-						array( 
-							'date' => current_time( 'mysql' ), 
-							'count' => 0,
-							'author' => wp_get_current_user()->user_login,
-							'filename' => $filename, 
-						) 
-					);
-
-					wp_redirect( get_admin_url() . 'admin.php?page=wp_dispatcher&upload=success');
+				$destination = WP_CONTENT_DIR . '/uploads/wp-dispatcher/' . $filename;
+				
+				// Check if file already exists
+				if (file_exists($destination))
+				{
+					wp_redirect( get_admin_url() . 'admin.php?page=wp_dispatcher_new&upload=duplicate');
 					exit();
-        }
+				}
+				else {
+
+					$uploaded = move_uploaded_file( $source, $destination );
+
+					// Error checking using WP functions
+					if(is_wp_error($uploaded)){
+							echo "Error uploading file: " . $uploaded->get_error_message();
+					}else{
+	
+						// Insert to data base
+						global $wpdb;
+						$table_name = $wpdb->prefix . 'dispatcher_uploads';
+	
+						$wpdb->insert( 
+							$table_name, 
+							array( 
+								'date' => current_time( 'mysql' ), 
+								'count' => 0,
+								'author' => wp_get_current_user()->user_login,
+								'filename' => $filename, 
+							) 
+						);
+	
+						wp_redirect( get_admin_url() . 'admin.php?page=wp_dispatcher&upload=success');
+						exit();
+					}
+
+				}
 			}
 		}
 	}

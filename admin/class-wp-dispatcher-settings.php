@@ -80,7 +80,7 @@ class Wp_Dispatcher_Settings {
 
 			<h1 class="wp-heading-inline"><?php _e( 'WP Dispatcher', 'wp-dispatcher' ); ?></h1>
 			<a href="<?php echo get_admin_url() . 'admin.php?page=wp_dispatcher_new' ?>" class="page-title-action aria-button-if-js" role="button" aria-expanded="false">Add New</a>
-
+			<hr class="wp-header-end">
 			<?php 
 			
 				if( isset( $_GET[ 'tab' ] ) ) {
@@ -135,14 +135,17 @@ class Wp_Dispatcher_Settings {
 			}
 			else if ( $active_tab == 'settings' ) {
 				?>
-				<div class="notice notice-info ">
-        	<p><?php _e( 'Settings are not available yet.', 'wp-dispatcher' ); ?></p>
-				</div>
-				
-				<p>Plugin is still in development. Next versions will include settings. If you would like to contribute to plugin development please contact via plugin site.</p>
-
+				<form method="post" action="options.php">
+			
 				<?php
 				
+				settings_fields( 'wp_dispatcher_options' );
+				do_settings_sections( 'wp_dispatcher_options' );
+				submit_button();
+				?>
+				</form>
+				<?php
+
 			}
 			else {
 				echo "none";
@@ -152,4 +155,115 @@ class Wp_Dispatcher_Settings {
 	</div><!-- /.wrap -->
 	<?php
 	}
+
+		/**
+	 * This function provides a simple description for the General Options page.
+	 *
+	 * It's called from the 'wppb-demo_initialize_theme_options' function by being passed as a parameter
+	 * in the add_settings_section function.
+	 */
+	public function general_options_callback() {
+		$options = get_option('wp_dispatcher_options');
+		//var_dump($options);
+		echo '<p>' . __( 'Adjust settings for WP Dispatcher.', 'wp-dispatcher' ) . '</p>';
+	} // end general_options_callback
+
+
+	public function default_dispatcher_options(){
+		$defaults = array(
+			'expires_after'		=>	48,
+			'url_resolver'		=>	'resolve'
+		);
+
+		return $defaults;
+	}
+
+
+	public function initialize_dispatcher_options() {
+			// If the theme options don't exist, create them.
+			if( false == get_option( 'wp_dispatcher_options' ) ) {
+				$default_array = $this->default_dispatcher_options();
+				add_option( 'wp_dispatcher_options', $default_array );
+			}
+
+			add_settings_section(
+				'general_settings_section',			            // ID used to identify this section and with which to register options
+				__( 'Dispatcher Settings', 'wp-dispatcher' ),		        // Title to be displayed on the administration page
+				array( $this, 'general_options_callback'),	    // Callback used to render the description of the section
+				'wp_dispatcher_options'		                // Page on which to add this section of options
+			);
+
+			// Next, we'll introduce the fields for toggling the visibility of content elements.
+		add_settings_field(
+			'expires_after',						        // ID used to identify the field throughout the theme
+			__( 'Expires after', 'wp-dispatcher' ),					// The label to the left of the option interface element
+			array( $this, 'expires_after_callback'),	// The name of the function responsible for rendering the option interface
+			'wp_dispatcher_options',	            // The page on which this option will be displayed
+			'general_settings_section',			        // The name of the section to which this field belongs
+			array(								        // The array of arguments to pass to the callback. In this case, just a description.
+				__( 'Sets how much time after generation a link is available. Does not affect already created links.', 'wp-dispatcher' ),
+			)
+		);
+
+/* 		add_settings_field(
+			'url_resolver',
+			__( 'URL Resolver slug', 'wp-dispatcher' ),
+			array( $this, 'url_resolver_callback'),
+			'wp_dispatcher_options',
+			'general_settings_section',
+			array(
+				__( 'Sets the name of the url resolver tag.', 'wp-dispatcher' ),
+			)
+		); */
+
+		// Finally, we register the fields with WordPress
+		register_setting(
+			'wp_dispatcher_options',
+			'wp_dispatcher_options',
+			array( $this, 'validate_input')
+		);
+						
+	}
+
+	public function expires_after_callback($args){
+		$options = get_option( 'wp_dispatcher_options' );
+
+		$html = '<input class="small-text"  type="number" min="1" max="999" id="expire_after" name="wp_dispatcher_options[expires_after]" value="' . $options['expires_after'] . '" /> hours';
+		$html .= '<br><br><i>&nbsp;'  . $args[0] . '</i>';
+		echo $html;
+	}
+
+	public function url_resolver_callback($args){
+		$options = get_option( 'wp_dispatcher_options' );
+
+		$html = '<input type="text" id="url_resolver" name="wp_dispatcher_options[url_resolver]" value="' . $options['url_resolver'] . '" />';
+		$html .= '<br><i>&nbsp;'  . $args[0] . '</i>';
+		echo $html;
+	}
+
+
+	public function validate_input( $input ) {
+
+		// Create our array for storing the validated options
+		$output = array();
+
+		// Loop through each of the incoming options
+		foreach( $input as $key => $value ) {
+
+			// Check to see if the current option has a value. If so, process it.
+			if( isset( $input[$key] ) ) {
+
+				// Strip all HTML and PHP tags and properly handle quoted strings
+				$output[$key] = strip_tags( stripslashes( $input[ $key ] ) );
+
+			} // end if
+
+		} // end foreach
+
+		// Return the array processing any additional functions filtered by this action
+		return apply_filters( 'validate_input', $output, $input );
+
+	} // end validate_input_examples
+	
+
 }

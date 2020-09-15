@@ -69,7 +69,13 @@ class Wp_Dispatcher_Admin_Notices {
 				<p><?php _e( 'Error! Please select a file to upload!', 'wp-dispatch' ); ?></p>
 		</div>
 		<?php
-		}	
+		}	else if(isset($_GET['upload']) && $_GET['upload'] == 'duplicate' && $_GET['page'] == 'wp_dispatcher_new'  ){
+			?>
+			<div class="notice notice-warning">
+					<p><?php _e( 'Warning! You have already uploaded a file with this name. Please rename your file before upload!', 'wp-dispatch' ); ?></p>
+			</div>
+			<?php
+			}	
 	}
 }
   

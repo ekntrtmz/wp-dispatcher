@@ -163,7 +163,8 @@ class Wp_Dispatcher {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'admin_menu', $plugin_settings, 'setup_plugin_options_menu' );
-		
+		$this->loader->add_action( 'admin_init', $plugin_settings, 'initialize_dispatcher_options' );
+
 		$this->loader->add_action( 'admin_menu', $plugin_add_new_upload, 'setup_plugin_sub_menu' );
 		$this->loader->add_action( 'admin_post_process_upload', $plugin_add_new_upload, 'wp_dispatcher_process_upload' );
 
