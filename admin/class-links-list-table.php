@@ -35,13 +35,15 @@ class Links_List_Table extends Custom_WP_List_Table {
   function column_default($item, $column_name){
 
     
-
+    $has_expired = false;
     $expiration_date = new DateTime($item["expires"]);
-    $remaining_time = $expiration_date->diff(new DateTime());
-    if($remaining_time > 0) {
+
+    if($expiration_date > new DateTime()) {
+      $remaining_time = $expiration_date->diff(new DateTime());
       $expires_in = $remaining_time->format("%a days, %h hours, %i minutes, %s seconds");
     } else {
-      $expires_in="Link has expired.";
+      $has_expired=true;
+      $expires_in="0";
     }
 
     // Expensive filename fetch | uploads<>links: 1-n-relationship
@@ -58,7 +60,12 @@ class Links_List_Table extends Custom_WP_List_Table {
         case 'expires':
           return $expires_in;
         case 'link':
-          return '<a href="' . $url . '">' . $url . '</a>';
+          if($has_expired){
+            return "Link has expired.";
+          }
+          else {
+            return '<a href="' . $url . '">' . $url . '</a>';
+          }
         default:
             return print_r($item,true); //Show the whole array for troubleshooting purposes
     }
