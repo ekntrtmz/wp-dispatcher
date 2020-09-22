@@ -34,9 +34,15 @@ class Links_List_Table extends Custom_WP_List_Table {
 
   function column_default($item, $column_name){
 
+    
+
     $expiration_date = new DateTime($item["expires"]);
     $remaining_time = $expiration_date->diff(new DateTime());
-    $expires_in = $remaining_time->format("%a days, %h hours, %i minutes, %s seconds");
+    if($remaining_time > 0) {
+      $expires_in = $remaining_time->format("%a days, %h hours, %i minutes, %s seconds");
+    } else {
+      $expires_in="Link has expired.";
+    }
 
     // Expensive filename fetch | uploads<>links: 1-n-relationship
     global $wpdb;
