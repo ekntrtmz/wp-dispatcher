@@ -1,9 +1,9 @@
 <?php
-//require_once plugin_dir_path( dirname( __FILE__ ) ) . '/libraries/class-wp-list-table.php';
 
 if(!class_exists('Custom_WP_List_Table')){
-  require_once( ABSPATH . 'wp-content/plugins/wp-dispatcher/libraries/class-wp-list-table.php' );
-  //require_once( ABSPATH . 'wp-admin/includes/class-wp-list-table.php' );
+
+  require_once plugin_dir_path( dirname( __FILE__ ) ) . 'libraries/class-wp-list-table.php';
+
 }
 
 
@@ -159,12 +159,12 @@ class Links_List_Table extends Custom_WP_List_Table {
        * to a custom query. The returned data will be pre-sorted, and this array
        * sorting technique would be unnecessary.
        */
-      function usort_reorder($a,$b){
-          $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; //If no sort, default to title
-          $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
-          $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
-          return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
-      }
+      // function usort_reorder($a,$b){
+      //     $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'title'; //If no sort, default to title
+      //     $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+      //     $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
+      //     return ($order==='asc') ? $result : -$result; //Send final sort direction to usort
+      // }
       //usort($data, 'usort_reorder');
       
       
