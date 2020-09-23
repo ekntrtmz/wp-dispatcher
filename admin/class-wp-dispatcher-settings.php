@@ -84,7 +84,8 @@ class Wp_Dispatcher_Settings {
 			<?php 
 			
 				if( isset( $_GET[ 'tab' ] ) ) {
-				$active_tab = $_GET[ 'tab' ];
+
+				$active_tab = sanitize_text_field($_GET[ 'tab' ]);
 			} else if( $active_tab == 'uploads' ) {
 				$active_tab = 'uploads';
 			} else if( $active_tab == 'links' ) {
@@ -112,7 +113,7 @@ class Wp_Dispatcher_Settings {
 				<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 				<form id="movies-filter" method="get">
 				<!-- For plugins, we also need to ensure that the form posts back to our current page -->
-					<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+					<input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
 					<?php $uploads_list_table->display();	?>
 				</form>
 
@@ -127,7 +128,7 @@ class Wp_Dispatcher_Settings {
 				<!-- Forms are NOT created automatically, so you need to wrap the table in one to use features like bulk actions -->
 				<form id="movies-filter" method="get">
 					<!-- For plugins, we also need to ensure that the form posts back to our current page -->
-					<input type="hidden" name="page" value="<?php echo $_REQUEST['page'] ?>" />
+					<input type="hidden" name="page" value="<?php echo esc_attr($_REQUEST['page']) ?>" />
 					<?php $links_list_table->display();	?>
 				</form>
 				

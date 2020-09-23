@@ -102,9 +102,9 @@ class Wp_Dispatcher_Add_New_Upload {
 		else {
 			if(isset($_FILES['file_upload'])){
 
-				$source = $_FILES['file_upload']['tmp_name'];
+				$source = sanitize_file_name($_FILES['file_upload']['tmp_name']);
 				
-				$filename = $_FILES['file_upload']['name'];
+				$filename = sanitize_file_name($_FILES['file_upload']['name']);
 
         //$ext = pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION);
         //$uuid = uniqid();
