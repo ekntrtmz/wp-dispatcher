@@ -31,6 +31,12 @@ Caution: Files are protected via .htaccess. This works only in LAMP environment 
 
 == Changelog ==
 
+= 1.1 =
+* Minor improvements:
+    - set expiration time limit in plugin settings
+    - fix sanitizing & validation issues
+
+
 = 1.0 =
 * This version contains very basic features: 
     - upload files to secure folder
