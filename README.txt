@@ -1,7 +1,7 @@
 === Plugin Name ===
 Contributors: ekn.dev
 Donate link: ekn.dev
-Tags: comments, spam
+Tags: secure downloads, temporary downloads, download links
 Requires at least: 3.0.1
 Tested up to: 5.5.1
 Stable tag: 5.5
@@ -11,6 +11,12 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Generate secure download links dynamically from your uploads using shortcodes.
 
 == Description ==
+
+With the plugin WP DISPATCHER you can create an temporary and secure download link for your file uploads. Your uploads are secured in a special folder. The secure download links are created by shortcodes which you can use anywhere. Every shortcode call generates a new download link so be cautious where to use it (best suited within automatic emails).
+
+- Create temporary download links for any file 
+- Automatically expire download links after a time limit limit 
+- Know how many times the file has been downloaded.
 
 First upload your files to a secured folder. Then generate expiring links to your protected uploads. Usage with wp shortcodes. 
 
