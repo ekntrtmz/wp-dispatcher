@@ -102,9 +102,8 @@ class Wp_Dispatcher_Add_New_Upload {
 		else {
 			if(isset($_FILES['file_upload'])){
 
-				$source = sanitize_file_name($_FILES['file_upload']['tmp_name']);
-				
 				$filename = sanitize_file_name($_FILES['file_upload']['name']);
+				//$filename = $_FILES['file_upload']['name'];
 
         //$ext = pathinfo($_FILES['file_upload']['name'], PATHINFO_EXTENSION);
         //$uuid = uniqid();
@@ -119,12 +118,12 @@ class Wp_Dispatcher_Add_New_Upload {
 				}
 				else {
 
-					$uploaded = move_uploaded_file( $source, $destination );
+					$uploaded = move_uploaded_file( $_FILES['file_upload']['tmp_name'], $destination );
 
 					// Error checking using WP functions
 					if(is_wp_error($uploaded)){
 							echo "Error uploading file: " . $uploaded->get_error_message();
-					}else{
+					} else {
 	
 						// Insert to data base
 						global $wpdb;
