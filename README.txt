@@ -31,6 +31,10 @@ Caution: Files are protected via .htaccess. This works only in LAMP environment 
 
 == Changelog ==
 
+= 1.2 =
+* Minor Fix:
+    - fix db prefixing
+
 = 1.1 =
 * Minor improvements:
     - set expiration time limit in plugin settings
