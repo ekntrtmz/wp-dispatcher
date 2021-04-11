@@ -48,8 +48,9 @@ class Links_List_Table extends Custom_WP_List_Table {
 
     // Expensive filename fetch | uploads<>links: 1-n-relationship
     global $wpdb;
+    $table_name = $wpdb->prefix . 'dispatcher_uploads';
     $filename = $wpdb->get_var( 
-      "SELECT filename FROM wp_dispatcher_uploads WHERE id = {$item['upload_id']}"
+      "SELECT filename FROM {$table_name} WHERE id = {$item['upload_id']}"
      );
 
     $url = get_site_url() . '/?resolve=' . $item["hash_id"];

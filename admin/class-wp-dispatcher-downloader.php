@@ -108,10 +108,10 @@ class Wp_Dispatcher_Downloader {
         wp_redirect( get_site_url() . '/download-is-not-available');
       }
       else {
-        $upload = $wpdb->get_row("SELECT * FROM wp_dispatcher_uploads WHERE id = {$link->upload_id}");
+        $upload = $wpdb->get_row("SELECT * FROM {$table_name} WHERE id = {$link->upload_id}");
         $count = $upload->count + 1;
         $wpdb->update( 
-          'wp_dispatcher_uploads', 
+          $table_name, 
           array( 'count' => $count ), 
           array( 'id' => $link->upload_id ), 
           array( '%d' ), 
