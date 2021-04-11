@@ -28,6 +28,14 @@ Caution: Files are protected via .htaccess. This works only in LAMP environment 
 1. Upload `wp-dispatcher.php` to the `/wp-content/plugins/` directory
 2. Activate the plugin through the 'Plugins' menu in WordPress
 
+== Developer Note ==
+Create a Pull Request against a new branch on Github: https://github.com/ekntrtmz/wp-dispatcher
+
+== SVN Update Note ==
+Copy newest version into trunk and commit changes to trunk.
+Copy trunk to a new tag with semver. Push changes to new tag.
+Examples:  https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subversion/#examples
+
 
 == Changelog ==
 
