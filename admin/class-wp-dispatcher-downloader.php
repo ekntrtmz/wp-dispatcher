@@ -98,9 +98,10 @@ class Wp_Dispatcher_Downloader {
   public function resolve_hash_id($hash) {
 
     global $wpdb;
-    $table_name = $wpdb->prefix . 'dispatcher_links';
+    $link_table_name = $wpdb->prefix . 'dispatcher_links';
+    $uploads_table_name = $wpdb->prefix . 'dispatcher_uploads';
 
-    $link = $wpdb->get_row("SELECT * FROM {$table_name} WHERE hash_id = '{$hash}'");
+    $link = $wpdb->get_row("SELECT * FROM {$link_table_name} WHERE hash_id = '{$hash}'");
 
     if((null !== $link)) {
 
@@ -108,10 +109,10 @@ class Wp_Dispatcher_Downloader {
         wp_redirect( get_site_url() . '/download-is-not-available');
       }
       else {
-        $upload = $wpdb->get_row("SELECT * FROM {$table_name} WHERE id = {$link->upload_id}");
+        $upload = $wpdb->get_row("SELECT * FROM {$uploads_table_name} WHERE id = {$link->upload_id}");
         $count = $upload->count + 1;
         $wpdb->update( 
-          $table_name, 
+          $uploads_table_name, 
           array( 'count' => $count ), 
           array( 'id' => $link->upload_id ), 
           array( '%d' ), 
