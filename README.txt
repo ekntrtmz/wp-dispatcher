@@ -39,6 +39,9 @@ Examples:  https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subv
 
 == Changelog ==
 
+= 1.2.1 =
+* Fix critical issue
+
 = 1.2 =
 * Minor Fix:
     - fix db prefixing
