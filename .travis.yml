@@ -1,17 +1,15 @@
 language: php
-
+ 
 services:
-  -mysql
-
+  - mysql
+ 
 cache:
   directories:
     - $HOME/.composer/cache
  
-	
 # Six versions of PHP...
 php:
   - 7.2
-
  
 # ...times five versions of WordPress
 env:
@@ -26,9 +24,6 @@ install:
  
 script:
   - ./vendor/bin/phpunit
-
-matrix:
-  #fast_finish: true
 
 before_install:
   - export PATH="$HOME/.composer/vendor/bin:$PATH"
