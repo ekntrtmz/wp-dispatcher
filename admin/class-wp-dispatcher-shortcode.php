@@ -55,6 +55,8 @@ class Wp_Dispatcher_Shortcode
 	 */
 	public function generate_download_link($atts)
 	{
+		if ( is_admin()) return; // do not run in admin
+		
 		$options = get_option('wp_dispatcher_options');
 		$expiration_hours = $options['expires_after'];
 
@@ -69,16 +71,13 @@ class Wp_Dispatcher_Shortcode
 		);
 
 		if ($id != null) {
-
 			//	1. Find upload in database
 			global $wpdb;
 
 			$table_name = $wpdb->prefix . 'dispatcher_uploads';
 			$upload = $wpdb->get_row("SELECT * FROM {$table_name} WHERE id = {$id}");
 
-			if (null === $upload) {
-				return "Error";
-			}
+			if (null === $upload) return __("Error",  "wp-dispatcher");
 
 			// 2. prepare inserts
 			$hash = hash('sha256', current_time('mysql') . $upload->filename);
