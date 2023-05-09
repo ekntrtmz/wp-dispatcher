@@ -36,8 +36,6 @@ class Links_List_Table extends Custom_WP_List_Table
 
   function column_default($item, $column_name)
   {
-
-
     $has_expired = false;
     $expiration_date = new DateTime($item["expires"]);
 
@@ -64,11 +62,7 @@ class Links_List_Table extends Custom_WP_List_Table
       case 'expires':
         return $expires_in;
       case 'link':
-        if ($has_expired) {
-          return "Link has expired.";
-        } else {
-          return '<a href="' . $url . '">' . $url . '</a>';
-        }
+        return $has_expired ? __("Link has expired.",  "wp-dispatcher") : '<a href="' . $url . '">' . $url . '</a>';
       default:
         return print_r($item, true); //Show the whole array for troubleshooting purposes
     }
@@ -96,6 +90,21 @@ class Links_List_Table extends Custom_WP_List_Table
       'link' =>  __('Direct Download Link',  'wp-dispatcher')
     ];
     return $columns;
+  }
+
+  public function get_sortable_columns()
+  {
+    return [
+      'expires' => array('expires', false)
+    ];
+  }
+
+  private function sort_data($a, $b)
+  {
+    $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'id'; //If no sort, default to id
+    $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+    $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
+    return ($order === 'asc') ? $result : -$result; //Send final sort direction to usort
   }
 
   function column_cb($item)
@@ -138,7 +147,7 @@ class Links_List_Table extends Custom_WP_List_Table
      */
     $columns = $this->get_columns();
     $hidden = array();
-    //$sortable = $this->get_sortable_columns();
+    $sortable = $this->get_sortable_columns();
 
 
     /**
@@ -147,7 +156,7 @@ class Links_List_Table extends Custom_WP_List_Table
      * 3 other arrays. One for all columns, one for hidden columns, and one
      * for sortable columns.
      */
-    $this->_column_headers = array($columns, $hidden);
+    $this->_column_headers = array($columns, $hidden, $sortable);
 
 
     /**
@@ -202,6 +211,7 @@ class Links_List_Table extends Custom_WP_List_Table
     $table_name = $wpdb->prefix . 'dispatcher_links';
 
     $data = $wpdb->get_results("SELECT * FROM {$table_name} ORDER BY id DESC", ARRAY_A);
+    usort($data, array(&$this, 'sort_data'));
 
 
 

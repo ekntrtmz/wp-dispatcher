@@ -73,6 +73,22 @@ class Uploads_List_Table extends Custom_WP_List_Table
     return $columns;
   }
 
+  public function get_sortable_columns()
+  {
+    return [
+      'date' => array('date', false),
+      'count' => array('count', false)
+    ];
+  }
+
+  private function sort_data($a, $b)
+  {
+    $orderby = (!empty($_REQUEST['orderby'])) ? $_REQUEST['orderby'] : 'id'; //If no sort, default to id
+    $order = (!empty($_REQUEST['order'])) ? $_REQUEST['order'] : 'asc'; //If no order, default to asc
+    $result = strcmp($a[$orderby], $b[$orderby]); //Determine sort order
+    return ($order === 'asc') ? $result : -$result; //Send final sort direction to usort
+  }
+
   function column_cb($item)
   {
     return '<span class="dashicons dashicons-download"></span>';
@@ -113,7 +129,7 @@ class Uploads_List_Table extends Custom_WP_List_Table
      */
     $columns = $this->get_columns();
     $hidden = array();
-    //$sortable = $this->get_sortable_columns();
+    $sortable = $this->get_sortable_columns();
 
 
     /**
@@ -122,7 +138,7 @@ class Uploads_List_Table extends Custom_WP_List_Table
      * 3 other arrays. One for all columns, one for hidden columns, and one
      * for sortable columns.
      */
-    $this->_column_headers = array($columns, $hidden);
+    $this->_column_headers = array($columns, $hidden, $sortable);
 
 
     /**
@@ -177,6 +193,7 @@ class Uploads_List_Table extends Custom_WP_List_Table
     $table_name = $wpdb->prefix . 'dispatcher_uploads';
 
     $data = $wpdb->get_results("SELECT * FROM {$table_name} ORDER BY id DESC", ARRAY_A);
+    usort($data, array(&$this, 'sort_data'));
 
 
 
