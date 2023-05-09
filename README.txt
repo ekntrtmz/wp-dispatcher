@@ -1,10 +1,10 @@
 === Plugin Name ===
-Contributors: ekn.dev
+Contributors: ekn.dev,joanrodas
 Donate link: ekn.dev
 Tags: secure downloads, temporary downloads, download links
 Requires at least: 3.0.1
-Tested up to: 5.5.1
-Stable tag: 5.5
+Tested up to: 6.2
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -39,6 +39,16 @@ Examples:  https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subv
 
 == Changelog ==
 
+= 1.3 =
+* Minor improvements:
+    - Add optional parameter "exp" to set expiration hours in shortcode
+    - Add translatable strings
+    - Update "Custom_WP_List_Table"
+    - Add order in columns
+
+* Minor fixes:
+    - Prevent link generation in admin
+
 = 1.2.1 =
 * Fix critical issue
 
@@ -50,7 +60,6 @@ Examples:  https://developer.wordpress.org/plugins/wordpress-org/how-to-use-subv
 * Minor improvements:
     - set expiration time limit in plugin settings
     - fix sanitizing & validation issues
-
 
 = 1.0 =
 * This version contains very basic features: 

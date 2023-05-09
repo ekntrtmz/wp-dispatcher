@@ -14,7 +14,8 @@
  * Class WordPress_Plugin_Template_Settings
  *
  */
-class Wp_Dispatcher_Shortcode {
+class Wp_Dispatcher_Shortcode
+{
 
 	/**
 	 * The ID of this plugin.
@@ -41,68 +42,66 @@ class Wp_Dispatcher_Shortcode {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
-
+	public function __construct($plugin_name, $version)
+	{
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
-  /**
+	/**
 	 * Generate Shortcode
 	 *
 	 * @since    1.0.0
 	 */
-  public function generate_download_link($atts){
-    
-    extract(shortcode_atts(array(
-        'id' => null,
-		), $atts));
+	public function generate_download_link($atts)
+	{
+		if ( is_admin()) return; // do not run in admin
 		
-		if($id != null) {
+		$options = get_option('wp_dispatcher_options');
+		$expiration_hours = $options['expires_after'];
 
+		extract(
+			shortcode_atts(
+				[
+					'id' => null,
+					'exp' => $expiration_hours
+				],
+				$atts
+			)
+		);
+
+		if ($id != null) {
 			//	1. Find upload in database
 			global $wpdb;
 
 			$table_name = $wpdb->prefix . 'dispatcher_uploads';
-			$upload = $wpdb->get_row( "SELECT * FROM {$table_name} WHERE id = {$id}" );
+			$upload = $wpdb->get_row("SELECT * FROM {$table_name} WHERE id = {$id}");
 
-			if(null === $upload) {
-				return "Error";
-			}
+			if (null === $upload) return __("Error",  "wp-dispatcher");
 
 			// 2. prepare inserts
-			$hash = hash('sha256', current_time( 'mysql' ).$upload->filename);
-
-			$options = get_option( 'wp_dispatcher_options' );
-			$expiration_hours = $options['expires_after'];
-			
-			$created = current_time( 'mysql' );
-			$expiration_time = $expiration_hours * 60 * 60; // 24hours
-			$expires = date( 'Y-m-d H:i:s', strtotime($created) + $expiration_time );
+			$hash = hash('sha256', current_time('mysql') . $upload->filename);
+			$created = current_time('mysql');
+			$expiration_time = $exp * 60 * 60; // 24hours
+			$expires = date('Y-m-d H:i:s', strtotime($created) + $expiration_time);
 
 			//	3. insert into database
-			$table_name2 = $wpdb->prefix . 'dispatcher_links';
+			$links_table = $wpdb->prefix . 'dispatcher_links';
 
 			global $wpdb;
-			$wpdb->insert( 
-				$table_name2, 
-				array( 
-						'created' => current_time( 'mysql' ), 
-						'expires' => $expires,
-						'upload_id' => $upload->id,
-						'hash_id' => $hash
-					)
-				);
+			$wpdb->insert(
+				$links_table,
+				array(
+					'created' => current_time('mysql'),
+					'expires' => $expires,
+					'upload_id' => $upload->id,
+					'hash_id' => $hash
+				)
+			);
 
-				return get_site_url() . "?resolve=" . $hash;
-			
+			return get_site_url() . "?resolve=" . $hash;
 		}
-    else {
-			return "<pre>Error: Invalid input. Download-Link could not be generated. Please contact administrator.</pre>";
-		}
-  
+		
+		return "<pre>" . __('Error: Invalid input. Download-Link could not be generated. Please contact administrator.', 'wp-dispatcher') . "</pre>";
 	}
-	
-
 }
