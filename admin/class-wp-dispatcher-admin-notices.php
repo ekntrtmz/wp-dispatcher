@@ -14,7 +14,8 @@
  * Class WordPress_Plugin_Template_Settings
  *
  */
-class Wp_Dispatcher_Admin_Notices {
+class Wp_Dispatcher_Admin_Notices
+{
 
 	/**
 	 * The ID of this plugin.
@@ -41,42 +42,42 @@ class Wp_Dispatcher_Admin_Notices {
 	 * @param      string    $plugin_name       The name of this plugin.
 	 * @param      string    $version    The version of this plugin.
 	 */
-	public function __construct( $plugin_name, $version ) {
+	public function __construct($plugin_name, $version)
+	{
 
 		$this->plugin_name = $plugin_name;
 		$this->version = $version;
-
 	}
 
-  /**
+	/**
 	 * Successful Upoad Notice
 	 *
 	 * @since    1.0.0
 	 */
-  public function wp_dispatcher_admin_notices() {
+	public function wp_dispatcher_admin_notices()
+	{
 
 		global $pagenow;
-		if( $pagenow == 'admin.php'){
-			if(isset($_GET['upload']) && $_GET['upload'] == 'success' && $_GET['page'] == 'wp_dispatcher' ){
-    ?>
-    <div class="notice notice-success is-dismissible">
-			<p><?php _e( 'Success! The file has been uploaded!', 'wp-dispatch' ); ?></p>
-    </div>
-		<?php
-		}	else if(isset($_GET['upload']) && $_GET['upload'] == 'empty' && $_GET['page'] == 'wp_dispatcher_new'  ){
-		?>
-		<div class="notice notice-error">
-				<p><?php _e( 'Error! Please select a file to upload!', 'wp-dispatch' ); ?></p>
-		</div>
-		<?php
-		}	else if(isset($_GET['upload']) && $_GET['upload'] == 'duplicate' && $_GET['page'] == 'wp_dispatcher_new'  ){
-			?>
-			<div class="notice notice-warning">
-					<p><?php _e( 'Warning! You have already uploaded a file with this name. Please rename your file before upload!', 'wp-dispatch' ); ?></p>
-			</div>
+		if ($pagenow == 'admin.php') {
+			if (isset($_GET['upload']) && $_GET['upload'] == 'success' && $_GET['page'] == 'wp_dispatcher') {
+?>
+				<div class="notice notice-success is-dismissible">
+					<p><?php _e('Success! The file has been uploaded!', 'wp-dispatch'); ?></p>
+				</div>
 			<?php
-			}	
+			} else if (isset($_GET['upload']) && $_GET['upload'] == 'empty' && $_GET['page'] == 'wp_dispatcher_new') {
+			?>
+				<div class="notice notice-error">
+					<p><?php _e('Error! Please select a file to upload!', 'wp-dispatch'); ?></p>
+				</div>
+			<?php
+			} else if (isset($_GET['upload']) && $_GET['upload'] == 'duplicate' && $_GET['page'] == 'wp_dispatcher_new') {
+			?>
+				<div class="notice notice-warning">
+					<p><?php _e('Warning! You have already uploaded a file with this name. Please rename your file before upload!', 'wp-dispatch'); ?></p>
+				</div>
+<?php
+			}
+		}
 	}
-}
-  
 }
