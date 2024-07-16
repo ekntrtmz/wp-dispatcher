@@ -1,9 +1,9 @@
 === Plugin Name ===
-Contributors: ekn.dev,joanrodas
-Donate link: ekn.dev
+Contributors: ekndev,joanrodas
+Donate link: ekndev
 Tags: secure downloads, temporary downloads, download links
 Requires at least: 3.0.1
-Tested up to: 6.2
+Tested up to: 6.5
 Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
