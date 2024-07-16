@@ -1,4 +1,4 @@
-=== Plugin Name ===
+=== WP Dispatcher ===
 Contributors: ekndev,joanrodas
 Donate link: ekndev
 Tags: secure downloads, temporary downloads, download links
